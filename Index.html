@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-O/S Bronze Survey - Multilingual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Language Selection View */
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .language-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .language-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .language-card h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .language-card p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        /* Home View */
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .survey-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .survey-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .survey-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .survey-level {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .survey-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .survey-questions {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* Survey View */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+        
+        .question-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .options {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+        
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #e8ecfd;
+        }
+        
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Results View */
+        .results-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .score-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .score-value {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .rating-expert { color: #10b981; }
+        .rating-proficient { color: #3b82f6; }
+        .rating-developing { color: #f59e0b; }
+        .rating-needs { color: #ef4444; }
+        
+        .answer-item {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        
+        .answer-question {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .answer-response {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .answer-correct {
+            color: #10b981;
+            font-size: 13px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- Language Selection View -->
+        <div id="languageView">
+            <div class="header">
+                <h1>K-O/S Bronze Knowledge Assessment</h1>
+                <p>Select your language / Selecciona tu idioma / Sélectionnez votre langue</p>
+            </div>
+            
+            <div class="language-grid">
+                <div class="language-card" onclick="selectLanguage('en')">
+                    <h2>🇺🇸</h2>
+                    <h2>English</h2>
+                    <p>Take the survey in English</p>
+                </div>
+                <div class="language-card" onclick="selectLanguage('es')">
+                    <h2>🇪🇸</h2>
+                    <h2>Español</h2>
+                    <p>Realiza la encuesta en español</p>
+                </div>
+                <div class="language-card" onclick="selectLanguage('fr')">
+                    <h2>🇫🇷</h2>
+                    <h2>Français</h2>
+                    <p>Faire le sondage en français</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Home View -->
+        <div id="homeView" class="hidden">
+            <div class="header">
+                <h1 id="homeTitle">K-O/S Bronze Knowledge Assessment</h1>
+                <p id="homeSubtitle">Select a survey to test knowledge across your team</p>
+            </div>
+            
+            <div class="form-section" style="max-width: 500px; margin: 0 auto 30px; background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                <h2 style="font-size: 16px; margin-bottom: 1rem;" id="aboutYouLabel">About You</h2>
+                <div class="form-group">
+                    <label id="firstNameLabel">First Name <span style="color: red;">*</span></label>
+                    <input type="text" id="respondentFirstName" placeholder="Your first name" required>
+                </div>
+                <div class="form-group">
+                    <label id="lastNameLabel">Last Name <span style="color: red;">*</span></label>
+                    <input type="text" id="respondentLastName" placeholder="Your last name" required>
+                </div>
+            </div>
+            
+            <div class="survey-grid">
+                <button class="survey-card" onclick="startSurvey('associate')">
+                    <div class="survey-level" id="surveyLevel1">Basic</div>
+                    <div class="survey-title" id="surveyTitle1">Associate Survey</div>
+                    <div class="survey-questions" id="surveyQuestions1">20 questions</div>
+                </button>
+                
+                <button class="survey-card" onclick="startSurvey('lead')">
+                    <div class="survey-level" id="surveyLevel2">Intermediate</div>
+                    <div class="survey-title" id="surveyTitle2">Floor Leader Survey</div>
+                    <div class="survey-questions" id="surveyQuestions2">11 questions</div>
+                </button>
+                
+                <button class="survey-card" onclick="startSurvey('sme')">
+                    <div class="survey-level" id="surveyLevel3">Advanced</div>
+                    <div class="survey-title" id="surveyTitle3">SME Survey</div>
+                    <div class="survey-questions" id="surveyQuestions3">12 questions</div>
+                </button>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn-primary" onclick="changeLanguage()" id="changeLanguageBtn">Change Language</button>
+            </div>
+        </div>
+        
+        <!-- Survey View -->
+        <div id="surveyView" class="hidden">
+            <div class="form-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div style="font-size: 13px; color: #999;">
+                        <span id="surveyLevel"></span> • Question <span id="questionNumber"></span> of <span id="totalQuestions"></span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+                
+                <div id="questionContainer">
+                    <div class="question-text" id="questionText"></div>
+                    <div class="options" id="optionsContainer"></div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button id="prevBtn" onclick="previousQuestion()" style="display: none;">← Previous</button>
+                <button class="btn-primary" onclick="nextQuestion()">Next</button>
+            </div>
+        </div>
+        
+        <!-- Results View -->
+        <div id="resultsView" class="hidden">
+            <div class="header">
+                <h1 id="resultsTitle">Survey Complete!</h1>
+            </div>
+            
+            <div class="results-summary">
+                <div class="score-label" id="respondentLabel">Respondent:</div>
+                <div style="font-size: 16px; margin-bottom: 20px;" id="evalRespondent"></div>
+                
+                <div class="score-label" id="yourScoreLabel">Your Score</div>
+                <div class="score-value" id="scoreDisplay">0%</div>
+                <div style="font-size: 18px; margin-bottom: 20px;" id="ratingDisplay">Proficient</div>
+                <div style="font-size: 14px; line-height: 1.6;" id="actionDisplay">Recommended action</div>
+            </div>
+            
+            <div id="syncStatus" style="background: #e8f5e9; border-left: 4px solid #047857; padding: 15px; border-radius: 4px; display: none;">
+                <div style="color: #047857; font-weight: 500;">
+                    ☁️ <span id="syncStatusText">Results synced to cloud</span>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2 id="answersTitle">Your Answers</h2>
+                <div id="answersTracker" style="margin-top: 1rem;"></div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-primary" onclick="goHome()" id="homeBtn">Back to Home</button>
+                <button class="btn-primary" onclick="startSurvey(currentSurvey)" id="retakeBtn">Take Another Survey</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ===== GOOGLE SHEETS AUTO-SYNC CONFIGURATION =====
+        const GOOGLE_SHEETS_WEBHOOK = 'https://script.google.com/macros/s/AKfycbyAakkOX000f8sXt-sFX5rz5CgtOOkfu5FOWYmmH4-ujaXdUTgTINe5YLkKOwd5VQ8d3w/exec';
+        
+        // Language store
+        let currentLanguage = 'en';
+        let currentSurvey = '';
+        let currentQuestion = 0;
+        let answers = {};
+        let respondentFirstName = '';
+        let respondentLastName = '';
+        
+        // Translation object
+        const TRANSLATIONS = {
+            en: {
+                associate: [
+                    {q: "How were you trained for your current job? (select all that apply)", options: ["SOP/WI Formal Training", "By Trainer", "By a Cross Trainer", "I was not Trained"], isMultiple: true},
+                    {q: "Where can you find the SOP or Work Instructions? (select only one answer)", options: ["On the Tier Boards", "Workstation/Outside Office", "Supervisor", "Don't Know"]},
+                    {q: "Who is responsible for Safety? (select only one answer)", options: ["Management", "Safety Team", "Everyone", "Supervisors"]},
+                    {q: "Who can you go to with a Safety concern? (select only one answer)", options: ["Safety Advocate", "Supervisor", "Lead", "Manager", "All of the Above"]},
+                    {q: "How can you find the last safety incident on site? (select only one answer)", options: ["Safety Board", "Supervisor", "Safety Advocate", "All of the Above"]},
+                    {q: "Who are members of the HR team? (select all that apply)", options: ["Heather", "Jai", "Kaylee", "Shiv", "Jeff"], isMultiple: true},
+                    {q: "Do you see HR on the floor regularly? (select only one answer)", options: ["Yes", "No"]},
+                    {q: "Are employees recognized for good work? (select only one answer)", options: ["Yes", "No"]},
+                    {q: "Name one recognition program. (select all that apply)", options: ["Employee of the Month", "Perfect Attendance", "Thank you, Thursdays", "Giveaway Raffles", "All of the Above"], isMultiple: true},
+                    {q: "Have you heard of the Gallup Q12 Survey? (select only one answer)", options: ["Yes", "No"]},
+                    {q: "Is our customer happy with our service? (select only one answer)", options: ["Yes", "No", "Not Sure"]},
+                    {q: "What does VOC stand for? (select only one answer)", options: ["Voice of Client", "Voice of Customer", "Victory of Customer", "What is a VOC"]},
+                    {q: "What was our last Net Promotor Score (NPS) that tells us more about the Voice of the Customer (VOC)? (select only one answer)", options: ["1 out of 10", "10 out of 10", "5 out of 10", "What is an NPS or VOC"]},
+                    {q: "What areas are most important to our customer? (select all that apply)", options: ["Cost", "Inventory", "Speed", "Product", "Equipment"], isMultiple: true},
+                    {q: "How often is the SQDPCM board reviewed? (select only one answer)", options: ["Weekly", "Monthly", "Daily", "Yearly"]},
+                    {q: "How do you know if your area is ahead or behind plan? (select only one answer)", options: ["Red Light / Green Light", "I'm being rushed", "How full the dock is", "Customer complaining"]},
+                    {q: "What does the ETC/Status At a Glance indicate? (select only one answer)", options: ["Ahead / behind", "Customer is happy or not", "There are lifts down", "Break time"]},
+                    {q: "Have you participated in a Gemba Walk? (select only one answer)", options: ["Yes", "No"]},
+                    {q: "What is a Gemba? (select only one answer)", options: ["A meeting in the conference room", "Scheduled maintenance on equipment", "A Place Where Work is Done", "A training session for new employees"]},
+                    {q: "What is an Impact Plan? (select only one answer)", options: ["Plan to Impact Projects - All site project", "Plan to Improve Site's Engagement - When we score less than 3.9 on Gallup Survey", "Plan for Site's traffic management - Related to MHE", "Plan to bring an impact to the cost of site"]}
+                ],
+                lead: [
+                    {q: "Who owns safety? (select only one answer)", options: ["The person performing the task", "The Safety Advocate", "The Manager and GM", "Everyone"]},
+                    {q: "What does SQDPCM stand for? (select only one answer)", options: ["Safety, Quality, Delivery, Productivity, Cost, Morale", "Safety, Quantity, Distribution, Performance, Cost, Metrics", "Service, Quality, Downtime, Production, Compliance, Management", "Safety, Quality, Development, Planning, Communication, Maintenance"]},
+                    {q: "How often is the SQDPCM board reviewed? (select only one answer)", options: ["Weekly", "Monthly", "Daily", "Yearly"]},
+                    {q: "What is the required response time to employee suggestions? (select only one answer)", options: ["1 Week", "2 Weeks", "3 Weeks", "4 Weeks"]},
+                    {q: "What is Gemba? (select only one answer)", options: ["A meeting in the conference room", "Scheduled maintenance activity", "A Place where work is done", "A training session for new employees"]},
+                    {q: "What is a Hoshin Plan? (select only one answer)", options: ["A Place where work is done", "Site's 1-to-3-year Strategic Plan", "Scheduled maintenance Plan", "My Goals & Plan"]},
+                    {q: "What is the site Mission Statement? (select only one answer)", options: ["Save Cost and Money for Customer", "To Achieve Site's Annual Goals", "Best in Class Safety, Service, Efficiency", "Site's Mission is to clean as we go"]},
+                    {q: "What are Kenco's Guiding Principles? (select only one answer)", options: ["Honesty is the best policy", "Serve & Get better everyday", "Be Honest, Serve, Get Better", "Pick what you Scan, Scan what you pick"]},
+                    {q: "Select Which one is a quality tool (select only one answer)", options: ["Site Quality Advocate (SQA)", "SOP/WI Instruction", "NC & CAPA", "All of the Above"]},
+                    {q: "Select a Continuous Improvement Tool we use to solve problems (select only one answer)", options: ["A3", "Kaizen", "Tier Accountability/PDCA Action Item", "All of the Above"]},
+                    {q: "What is an Impact Plan? (select only one answer)", options: ["Plan to Impact Projects - All site project", "Plan to Improve Site's Engagement - When we score less than 3.9 on Gallup Survey", "Plan for Site's traffic management - Related to MHE", "Plan to bring an impact to the cost of site"]}
+                ]
+            },
+            es: {
+                associate: [
+                    {q: "¿Cómo fue entrenado para su trabajo actual? (selecciona todas las que apliquen)", options: ["Capacitación formal SOP/WI", "Por un entrenador", "Por un entrenador cruzado", "No fui entrenado"], isMultiple: true},
+                    {q: "¿Dónde puedo encontrar el SOP o las instrucciones de trabajo? (selecciona solo una respuesta)", options: ["En los tableros de nivel", "Estación de trabajo/Fuera de la oficina", "Supervisor", "No sé"]},
+                    {q: "¿Quién es responsable de la seguridad? (selecciona solo una respuesta)", options: ["Gestión", "Equipo de seguridad", "Todos", "Supervisores"]},
+                    {q: "¿A quién puedo acudir con una preocupación de seguridad? (selecciona solo una respuesta)", options: ["Defensor de la seguridad", "Supervisor", "Líder", "Gerente", "Todos los anteriores"]},
+                    {q: "¿Cómo puedo encontrar el último incidente de seguridad en el sitio? (selecciona solo una respuesta)", options: ["Tablero de seguridad", "Supervisor", "Defensor de la seguridad", "Todos los anteriores"]},
+                    {q: "¿Quiénes son miembros del equipo de RR.HH.? (selecciona todas las que apliquen)", options: ["Heather", "Jai", "Kaylee", "Shiv", "Jeff"], isMultiple: true},
+                    {q: "¿Ves a RR.HH. en el piso regularmente? (selecciona solo una respuesta)", options: ["Sí", "No"]},
+                    {q: "¿Se reconoce a los empleados por buen trabajo? (selecciona solo una respuesta)", options: ["Sí", "No"]},
+                    {q: "Nombre un programa de reconocimiento. (selecciona todas las que apliquen)", options: ["Empleado del mes", "Asistencia perfecta", "Gracias jueves", "Rifas de regalo", "Todos los anteriores"], isMultiple: true},
+                    {q: "¿Ha oído hablar de la encuesta Gallup Q12? (selecciona solo una respuesta)", options: ["Sí", "No"]},
+                    {q: "¿Está satisfecho nuestro cliente con nuestro servicio? (selecciona solo una respuesta)", options: ["Sí", "No", "No estoy seguro"]},
+                    {q: "¿Qué significa VOC? (selecciona solo una respuesta)", options: ["Voz del cliente", "Voz del cliente", "Victoria del cliente", "¿Qué es VOC?"]},
+                    {q: "¿Cuál fue nuestra última puntuación del promotor neto (NPS)? (selecciona solo una respuesta)", options: ["1 de 10", "10 de 10", "5 de 10", "¿Qué es NPS o VOC?"]},
+                    {q: "¿Cuáles son las áreas más importantes para nuestro cliente? (selecciona todas las que apliquen)", options: ["Costo", "Inventario", "Velocidad", "Producto", "Equipo"], isMultiple: true},
+                    {q: "¿Con qué frecuencia se revisa el tablero SQDPCM? (selecciona solo una respuesta)", options: ["Semanalmente", "Mensualmente", "Diariamente", "Anualmente"]},
+                    {q: "¿Cómo sabes si tu área está adelante o atrás del plan? (selecciona solo una respuesta)", options: ["Luz roja / Verde", "Me están apurando", "Qué tan lleno está el muelle", "Cliente se queja"]},
+                    {q: "¿Qué indica ETC/Estado de un vistazo? (selecciona solo una respuesta)", options: ["Adelante / Atrás", "El cliente está feliz o no", "Hay montacargas abajo", "Hora del descanso"]},
+                    {q: "¿Ha participado en un Gemba Walk? (selecciona solo una respuesta)", options: ["Sí", "No"]},
+                    {q: "¿Qué es Gemba? (selecciona solo una respuesta)", options: ["Una reunión en la sala de conferencias", "Mantenimiento programado", "Un lugar donde se realiza el trabajo", "Una sesión de capacitación"]},
+                    {q: "¿Qué es un Plan de Impacto? (selecciona solo una respuesta)", options: ["Plan para impactar proyectos - Todos los proyectos del sitio", "Plan para mejorar el compromiso del sitio - Cuando marcamos menos de 3.9 en la encuesta Gallup", "Plan para la gestión del tráfico del sitio - Relacionado con MHE", "Plan para traer un impacto en el costo del sitio"]}
+                ],
+                lead: [
+                    {q: "¿Quién es responsable de la seguridad? (selecciona solo una respuesta)", options: ["La persona que realiza la tarea", "El defensor de la seguridad", "El gerente y GM", "Todos"]},
+                    {q: "¿Qué significa SQDPCM? (selecciona solo una respuesta)", options: ["Seguridad, Calidad, Entrega, Productividad, Costo, Moral", "Seguridad, Cantidad, Distribución, Desempeño, Costo, Métricas", "Servicio, Calidad, Tiempo de inactividad, Producción, Cumplimiento, Gestión", "Seguridad, Calidad, Desarrollo, Planificación, Comunicación, Mantenimiento"]},
+                    {q: "¿Con qué frecuencia se revisa el tablero SQDPCM? (selecciona solo una respuesta)", options: ["Semanalmente", "Mensualmente", "Diariamente", "Anualmente"]},
+                    {q: "¿Cuál es el tiempo de respuesta requerido para sugerencias de empleados? (selecciona solo una respuesta)", options: ["1 semana", "2 semanas", "3 semanas", "4 semanas"]},
+                    {q: "¿Qué es Gemba? (selecciona solo una respuesta)", options: ["Una reunión en la sala de conferencias", "Actividad de mantenimiento programado", "Un lugar donde se realiza el trabajo", "Una sesión de capacitación"]},
+                    {q: "¿Qué es un plan Hoshin? (selecciona solo una respuesta)", options: ["Un lugar donde se realiza el trabajo", "Plan estratégico del sitio de 1 a 3 años", "Plan de mantenimiento programado", "Mis metas y plan"]},
+                    {q: "¿Cuál es la declaración de misión del sitio? (selecciona solo una respuesta)", options: ["Ahorrar costos y dinero del cliente", "Lograr los objetivos anuales del sitio", "Seguridad, servicio y eficiencia de clase mundial", "La misión del sitio es limpiar conforme avanzamos"]},
+                    {q: "¿Cuáles son los principios rectores de Kenco? (selecciona solo una respuesta)", options: ["La honestidad es la mejor política", "Servir y mejorar todos los días", "Sé honesto, sirve y mejora", "Recoge lo que escaneas, escanea lo que recoges"]},
+                    {q: "Selecciona cuál es una herramienta de calidad (selecciona solo una respuesta)", options: ["Defensor de calidad del sitio (SQA)", "Instrucción SOP/WI", "NC y CAPA", "Todos los anteriores"]},
+                    {q: "Selecciona una herramienta de mejora continua que usamos para resolver problemas (selecciona solo una respuesta)", options: ["A3", "Kaizen", "Artículo de acción Tier Accountability/PDCA", "Todos los anteriores"]},
+                    {q: "¿Qué es un Plan de Impacto? (selecciona solo una respuesta)", options: ["Plan para impactar proyectos - Todos los proyectos del sitio", "Plan para mejorar el compromiso del sitio - Cuando marcamos menos de 3.9 en la encuesta Gallup", "Plan para la gestión del tráfico del sitio - Relacionado con MHE", "Plan para traer un impacto en el costo del sitio"]}
+                ]
+            },
+            fr: {
+                associate: [
+                    {q: "Comment avez-vous été formé pour votre travail actuel? (sélectionnez tous les éléments applicables)", options: ["Formation formelle SOP/WI", "Par un formateur", "Par un formateur polyvalent", "Je n'ai pas été formé"], isMultiple: true},
+                    {q: "Où pouvez-vous trouver le SOP ou les instructions de travail? (sélectionnez une seule réponse)", options: ["Sur les tableaux de niveau", "Poste de travail/Bureau extérieur", "Superviseur", "Je ne sais pas"]},
+                    {q: "Qui est responsable de la sécurité? (sélectionnez une seule réponse)", options: ["Gestion", "Équipe de sécurité", "Tout le monde", "Superviseurs"]},
+                    {q: "À qui pouvez-vous vous adresser avec une préoccupation en matière de sécurité? (sélectionnez une seule réponse)", options: ["Défenseur de la sécurité", "Superviseur", "Chef", "Gestionnaire", "Tous les éléments ci-dessus"]},
+                    {q: "Comment pouvez-vous trouver le dernier incident de sécurité sur le site? (sélectionnez une seule réponse)", options: ["Tableau de sécurité", "Superviseur", "Défenseur de la sécurité", "Tous les éléments ci-dessus"]},
+                    {q: "Qui sont les membres de l'équipe RH? (sélectionnez tous les éléments applicables)", options: ["Heather", "Jai", "Kaylee", "Shiv", "Jeff"], isMultiple: true},
+                    {q: "Voyez-vous régulièrement les RH sur le terrain? (sélectionnez une seule réponse)", options: ["Oui", "Non"]},
+                    {q: "Les employés sont-ils reconnus pour leur bon travail? (sélectionnez une seule réponse)", options: ["Oui", "Non"]},
+                    {q: "Nommez un programme de reconnaissance. (sélectionnez tous les éléments applicables)", options: ["Employé du mois", "Assiduité parfaite", "Merci jeudi", "Tirages au sort de cadeaux", "Tous les éléments ci-dessus"], isMultiple: true},
+                    {q: "Avez-vous entendu parler du sondage Gallup Q12? (sélectionnez une seule réponse)", options: ["Oui", "Non"]},
+                    {q: "Nos clients sont-ils satisfaits de notre service? (sélectionnez une seule réponse)", options: ["Oui", "Non", "Pas sûr"]},
+                    {q: "Que signifie VOC? (sélectionnez une seule réponse)", options: ["Voix du client", "Voix du client", "Victoire du client", "Qu'est-ce qu'une VOC?"]},
+                    {q: "Quel était notre dernier score du promoteur net (NPS)? (sélectionnez une seule réponse)", options: ["1 sur 10", "10 sur 10", "5 sur 10", "Qu'est-ce qu'un NPS ou une VOC?"]},
+                    {q: "Quels domaines sont les plus importants pour notre client? (sélectionnez tous les éléments applicables)", options: ["Coût", "Inventaire", "Vitesse", "Produit", "Équipement"], isMultiple: true},
+                    {q: "À quelle fréquence le tableau SQDPCM est-il révisé? (sélectionnez une seule réponse)", options: ["Hebdomadaire", "Mensuel", "Quotidien", "Annuel"]},
+                    {q: "Comment savez-vous si votre zone est en avance ou en retard sur le plan? (sélectionnez une seule réponse)", options: ["Feu rouge / Feu vert", "On me presse", "Quel point le quai est plein", "Client se plaint"]},
+                    {q: "Qu'indique l'ETC/Statut en un coup d'œil? (sélectionnez une seule réponse)", options: ["En avance / En retard", "Le client est heureux ou non", "Il y a des chariots élévateurs en panne", "Heure de la pause"]},
+                    {q: "Avez-vous participé à une marche Gemba? (sélectionnez une seule réponse)", options: ["Oui", "Non"]},
+                    {q: "Qu'est-ce que Gemba? (sélectionnez une seule réponse)", options: ["Une réunion dans la salle de conférence", "Maintenance programmée", "Un endroit où le travail est effectué", "Une session de formation"]},
+                    {q: "Qu'est-ce qu'un plan d'impact? (sélectionnez une seule réponse)", options: ["Plan pour avoir un impact sur les projets - Tous les projets du site", "Plan pour améliorer l'engagement du site - Quand nous marquons moins de 3,9 au sondage Gallup", "Plan de gestion du trafic du site - Lié à MHE", "Plan pour avoir un impact sur le coût du site"]}
+                ],
+                lead: [
+                    {q: "Qui est responsable de la sécurité? (sélectionnez une seule réponse)", options: ["La personne effectuant la tâche", "Le défenseur de la sécurité", "Le gestionnaire et le GM", "Tout le monde"]},
+                    {q: "Que signifie SQDPCM? (sélectionnez une seule réponse)", options: ["Sécurité, Qualité, Livraison, Productivité, Coût, Moral", "Sécurité, Quantité, Distribution, Performance, Coût, Métriques", "Service, Qualité, Temps d'arrêt, Production, Conformité, Gestion", "Sécurité, Qualité, Développement, Planification, Communication, Maintenance"]},
+                    {q: "À quelle fréquence le tableau SQDPCM est-il révisé? (sélectionnez une seule réponse)", options: ["Hebdomadaire", "Mensuel", "Quotidien", "Annuel"]},
+                    {q: "Quel est le délai de réponse requis aux suggestions des employés? (sélectionnez une seule réponse)", options: ["1 semaine", "2 semaines", "3 semaines", "4 semaines"]},
+                    {q: "Qu'est-ce que Gemba? (sélectionnez une seule réponse)", options: ["Une réunion dans la salle de conférence", "Activité de maintenance programmée", "Un endroit où le travail est effectué", "Une session de formation"]},
+                    {q: "Qu'est-ce qu'un plan Hoshin? (sélectionnez une seule réponse)", options: ["Un endroit où le travail est effectué", "Plan stratégique du site de 1 à 3 ans", "Plan de maintenance programmée", "Mes objectifs et plan"]},
+                    {q: "Quelle est la déclaration de mission du site? (sélectionnez une seule réponse)", options: ["Économiser les coûts et l'argent du client", "Réaliser les objectifs annuels du site", "Sécurité, service et efficacité de classe mondiale", "La mission du site est de nettoyer au fur et à mesure"]},
+                    {q: "Quels sont les principes directeurs de Kenco? (sélectionnez une seule réponse)", options: ["L'honnêteté est la meilleure politique", "Servez et améliorez-vous chaque jour", "Soyez honnête, servez, améliorez-vous", "Scannez ce que vous prenez, prenez ce que vous scannez"]},
+                    {q: "Sélectionnez quel outil de qualité (sélectionnez une seule réponse)", options: ["Défenseur de la qualité du site (SQA)", "Instruction SOP/WI", "NC et CAPA", "Tous les éléments ci-dessus"]},
+                    {q: "Sélectionnez un outil d'amélioration continue que nous utilisons pour résoudre les problèmes (sélectionnez une seule réponse)", options: ["A3", "Kaizen", "Élément d'action Tier Accountability/PDCA", "Tous les éléments ci-dessus"]},
+                    {q: "Qu'est-ce qu'un plan d'impact? (sélectionnez une seule réponse)", options: ["Plan pour avoir un impact sur les projets - Tous les projets du site", "Plan pour améliorer l'engagement du site - Quand nous marquons moins de 3,9 au sondage Gallup", "Plan de gestion du trafic du site - Lié à MHE", "Plan pour avoir un impact sur le coût du site"]}
+                ]
+            }
+        };
+        
+        const UI_LABELS = {
+            en: {
+                homeTitle: "K-O/S Bronze Knowledge Assessment",
+                homeSubtitle: "Select a survey to test knowledge across your team",
+                aboutYouLabel: "About You",
+                firstNameLabel: "First Name",
+                lastNameLabel: "Last Name",
+                surveyLevel1: "Basic",
+                surveyTitle1: "Associate Survey",
+                surveyQuestions1: "20 questions",
+                surveyLevel2: "Intermediate",
+                surveyTitle2: "Floor Leader Survey",
+                surveyQuestions2: "11 questions",
+                surveyLevel3: "Advanced",
+                surveyTitle3: "SME Survey",
+                surveyQuestions3: "12 questions",
+                changeLanguageBtn: "Change Language",
+                resultsTitle: "Survey Complete!",
+                respondentLabel: "Respondent:",
+                yourScoreLabel: "Your Score",
+                answersTitle: "Your Answers",
+                homeBtn: "Back to Home",
+                retakeBtn: "Take Another Survey",
+                syncStatusText: "Results synced to cloud",
+                nameError: "Please enter both your first and last name",
+                questionAnswered: "Please answer this question before proceeding.",
+                expert: "Expert",
+                proficient: "Proficient",
+                developing: "Developing",
+                needs: "Needs Improvement",
+                action1: "Potential Trainer/Champion",
+                action2: "Refresher Training",
+                action3: "Targeted Coaching",
+                action4: "Formal Retraining"
+            },
+            es: {
+                homeTitle: "Evaluación de conocimiento K-O/S Bronze",
+                homeSubtitle: "Selecciona una encuesta para probar el conocimiento de tu equipo",
+                aboutYouLabel: "Acerca de ti",
+                firstNameLabel: "Nombre de pila",
+                lastNameLabel: "Apellido",
+                surveyLevel1: "Básico",
+                surveyTitle1: "Encuesta de asociado",
+                surveyQuestions1: "20 preguntas",
+                surveyLevel2: "Intermedio",
+                surveyTitle2: "Encuesta de líder de piso",
+                surveyQuestions2: "11 preguntas",
+                surveyLevel3: "Avanzado",
+                surveyTitle3: "Encuesta SME",
+                surveyQuestions3: "12 preguntas",
+                changeLanguageBtn: "Cambiar idioma",
+                resultsTitle: "¡Encuesta completa!",
+                respondentLabel: "Encuestado:",
+                yourScoreLabel: "Tu puntuación",
+                answersTitle: "Tus respuestas",
+                homeBtn: "Volver al inicio",
+                retakeBtn: "Realizar otra encuesta",
+                syncStatusText: "Resultados sincronizados con la nube",
+                nameError: "Por favor, ingresa tu nombre y apellido",
+                questionAnswered: "Por favor, responde esta pregunta antes de continuar.",
+                expert: "Experto",
+                proficient: "Competente",
+                developing: "Desarrollo",
+                needs: "Necesita mejora",
+                action1: "Entrenador/Campeón Potencial",
+                action2: "Entrenamiento de Actualización",
+                action3: "Entrenamiento Dirigido",
+                action4: "Reentrenamiento Formal"
+            },
+            fr: {
+                homeTitle: "Évaluation des connaissances K-O/S Bronze",
+                homeSubtitle: "Sélectionnez un sondage pour tester les connaissances de votre équipe",
+                aboutYouLabel: "À propos de vous",
+                firstNameLabel: "Prénom",
+                lastNameLabel: "Nom de famille",
+                surveyLevel1: "Basique",
+                surveyTitle1: "Sondage associé",
+                surveyQuestions1: "20 questions",
+                surveyLevel2: "Intermédiaire",
+                surveyTitle2: "Sondage du chef d'équipe",
+                surveyQuestions2: "11 questions",
+                surveyLevel3: "Avancé",
+                surveyTitle3: "Sondage SME",
+                surveyQuestions3: "12 questions",
+                changeLanguageBtn: "Changer la langue",
+                resultsTitle: "Sondage terminé!",
+                respondentLabel: "Répondant:",
+                yourScoreLabel: "Votre score",
+                answersTitle: "Vos réponses",
+                homeBtn: "Retour à l'accueil",
+                retakeBtn: "Répondre à un autre sondage",
+                syncStatusText: "Résultats synchronisés avec le cloud",
+                nameError: "Veuillez entrer votre prénom et votre nom de famille",
+                questionAnswered: "Veuillez répondre à cette question avant de continuer.",
+                expert: "Expert",
+                proficient: "Compétent",
+                developing: "En développement",
+                needs: "Besoin d'amélioration",
+                action1: "Formateur/Champion potentiel",
+                action2: "Formation d'actualisation",
+                action3: "Coaching ciblé",
+                action4: "Réentraînement formel"
+            }
+        };
+        
+        // Initialize app
+        function selectLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('languageView').classList.add('hidden');
+            document.getElementById('homeView').classList.remove('hidden');
+            updateUILabels();
+        }
+        
+        function changeLanguage() {
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('surveyView').classList.add('hidden');
+            document.getElementById('resultsView').classList.add('hidden');
+            document.getElementById('languageView').classList.remove('hidden');
+            goHome();
+        }
+        
+        function updateUILabels() {
+            const labels = UI_LABELS[currentLanguage];
+            document.getElementById('homeTitle').textContent = labels.homeTitle;
+            document.getElementById('homeSubtitle').textContent = labels.homeSubtitle;
+            document.getElementById('aboutYouLabel').textContent = labels.aboutYouLabel;
+            document.getElementById('firstNameLabel').innerHTML = labels.firstNameLabel + ' <span style="color: red;">*</span>';
+            document.getElementById('lastNameLabel').innerHTML = labels.lastNameLabel + ' <span style="color: red;">*</span>';
+            document.getElementById('surveyLevel1').textContent = labels.surveyLevel1;
+            document.getElementById('surveyTitle1').textContent = labels.surveyTitle1;
+            document.getElementById('surveyQuestions1').textContent = labels.surveyQuestions1;
+            document.getElementById('surveyLevel2').textContent = labels.surveyLevel2;
+            document.getElementById('surveyTitle2').textContent = labels.surveyTitle2;
+            document.getElementById('surveyQuestions2').textContent = labels.surveyQuestions2;
+            document.getElementById('surveyLevel3').textContent = labels.surveyLevel3;
+            document.getElementById('surveyTitle3').textContent = labels.surveyTitle3;
+            document.getElementById('surveyQuestions3').textContent = labels.surveyQuestions3;
+            document.getElementById('changeLanguageBtn').textContent = labels.changeLanguageBtn;
+        }
+        
+        function startSurvey(surveyKey) {
+            currentSurvey = surveyKey;
+            const firstName = document.getElementById('respondentFirstName').value.trim();
+            const lastName = document.getElementById('respondentLastName').value.trim();
+            
+            if (!firstName || !lastName) {
+                alert(UI_LABELS[currentLanguage].nameError);
+                return;
+            }
+            
+            respondentFirstName = firstName;
+            respondentLastName = lastName;
+            currentQuestion = 0;
+            answers = {};
+            
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('surveyView').classList.remove('hidden');
+            renderQuestion();
+        }
+        
+        function renderQuestion() {
+            const questions = TRANSLATIONS[currentLanguage][currentSurvey];
+            const question = questions[currentQuestion];
+            
+            document.getElementById('questionNumber').textContent = currentQuestion + 1;
+            document.getElementById('totalQuestions').textContent = questions.length;
+            document.getElementById('surveyLevel').textContent = currentSurvey.charAt(0).toUpperCase() + currentSurvey.slice(1);
+            
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            document.getElementById('questionText').textContent = question.q;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            const isMultiple = question.isMultiple === true;
+            const inputType = isMultiple ? 'checkbox' : 'radio';
+            
+            question.options.forEach((option, idx) => {
+                const label = document.createElement('label');
+                label.className = 'option';
+                
+                const input = document.createElement('input');
+                input.type = inputType;
+                input.name = `q${currentQuestion}`;
+                input.value = option;
+                input.onchange = () => handleAnswer(option, isMultiple ? 'multiple' : 'single');
+                
+                if (answers[currentQuestion]) {
+                    if (isMultiple && Array.isArray(answers[currentQuestion]) && answers[currentQuestion].includes(option)) {
+                        input.checked = true;
+                        label.classList.add('selected');
+                    } else if (!isMultiple && answers[currentQuestion] === option) {
+                        input.checked = true;
+                        label.classList.add('selected');
+                    }
+                }
+                
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(option));
+                optionsContainer.appendChild(label);
+            });
+            
+            updateButtonVisibility();
+        }
+        
+        function handleAnswer(option, type) {
+            if (type === 'single') {
+                answers[currentQuestion] = option;
+                document.querySelectorAll('input[name="q' + currentQuestion + '"]').forEach(input => {
+                    input.parentElement.classList.toggle('selected', input.checked);
+                });
+            } else {
+                if (!answers[currentQuestion]) answers[currentQuestion] = [];
+                if (!Array.isArray(answers[currentQuestion])) answers[currentQuestion] = [];
+                
+                const checked = document.querySelector('input[name="q' + currentQuestion + '"]:checked');
+                const allChecked = Array.from(document.querySelectorAll('input[name="q' + currentQuestion + '"]:checked')).map(inp => inp.value);
+                answers[currentQuestion] = allChecked;
+                
+                document.querySelectorAll('input[name="q' + currentQuestion + '"]').forEach(input => {
+                    input.parentElement.classList.toggle('selected', input.checked);
+                });
+            }
+        }
+        
+        function isQuestionAnswered() {
+            return answers[currentQuestion] && (Array.isArray(answers[currentQuestion]) ? answers[currentQuestion].length > 0 : answers[currentQuestion].toString().trim().length > 0);
+        }
+        
+        function nextQuestion() {
+            if (!isQuestionAnswered()) {
+                alert(UI_LABELS[currentLanguage].questionAnswered);
+                return;
+            }
+            
+            const questions = TRANSLATIONS[currentLanguage][currentSurvey];
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                submitSurvey();
+            }
+        }
+        
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+        
+        function updateButtonVisibility() {
+            const prevBtn = document.getElementById('prevBtn');
+            if (currentQuestion > 0) {
+                prevBtn.style.display = 'block';
+            } else {
+                prevBtn.style.display = 'none';
+            }
+        }
+        
+        // Answer key for scoring
+        const ANSWER_KEY = {
+            associate: {
+                0: {type: 'partial', correctOptions: [0, 1, 2]},  // Q1: Options 0-2 correct, not 3
+                1: {type: 'single', correctAnswer: 1},             // Q2: Workstation
+                2: {type: 'single', correctAnswer: 2},             // Q3: Everyone
+                3: {type: 'single', correctAnswer: 4},             // Q4: All of Above
+                4: {type: 'single', correctAnswer: 3},             // Q5: All of Above
+                5: {type: 'multiple', correctAnswers: [0, 1, 2]},  // Q6: Heather, Jai, Kaylee
+                6: {type: 'single', correctAnswer: 0},             // Q7: Yes
+                7: {type: 'single', correctAnswer: 0},             // Q8: Yes
+                8: {type: 'any'},                                  // Q9: Any answer correct
+                9: {type: 'single', correctAnswer: 0},             // Q10: Yes
+                10: {type: 'single', correctAnswer: 0},            // Q11: Yes
+                11: {type: 'single', correctAnswer: 1},            // Q12: Voice of Customer
+                12: {type: 'single', correctAnswer: 1},            // Q13: 10 out of 10
+                13: {type: 'multiple', correctAnswers: [0, 1]},    // Q14: Cost, Inventory
+                14: {type: 'single', correctAnswer: 2},            // Q15: Daily
+                15: {type: 'single', correctAnswer: 1},            // Q16: Red Light/Green Light
+                16: {type: 'single', correctAnswer: 0},            // Q17: Ahead/Behind
+                17: {type: 'single', correctAnswer: 0},            // Q18: Yes
+                18: {type: 'single', correctAnswer: 2},            // Q19: A Place Where Work is Done
+                19: {type: 'single', correctAnswer: 1}             // Q20: Plan to Improve Site's Engagement
+            },
+            lead: {
+                0: {type: 'single', correctAnswer: 3},             // Q1: Everyone
+                1: {type: 'single', correctAnswer: 0},             // Q2: SQDPCM
+                2: {type: 'single', correctAnswer: 2},             // Q3: Daily
+                3: {type: 'single', correctAnswer: 1},             // Q4: 2 Weeks
+                4: {type: 'single', correctAnswer: 2},             // Q5: Place where work is done
+                5: {type: 'single', correctAnswer: 1},             // Q6: Site's 1-to-3-year Strategic Plan
+                6: {type: 'single', correctAnswer: 2},             // Q7: Best in Class
+                7: {type: 'single', correctAnswer: 2},             // Q8: Be Honest, Serve, Get Better
+                8: {type: 'single', correctAnswer: 3},             // Q9: All of the Above
+                9: {type: 'single', correctAnswer: 3},             // Q10: All of the Above
+                10: {type: 'single', correctAnswer: 1}             // Q11: Plan to Improve Site's Engagement
+            }
+        };
+
+        function checkAnswer(question, respondentAnswer, surveyType, questionIndex) {
+            if (!respondentAnswer || (Array.isArray(respondentAnswer) && respondentAnswer.length === 0)) {
+                return 0;
+            }
+            
+            const answerRule = ANSWER_KEY[surveyType][questionIndex];
+            if (!answerRule) return 0;
+            
+            if (answerRule.type === 'any') {
+                return 1; // Any answer is correct
+            }
+            
+            if (answerRule.type === 'single') {
+                if (typeof respondentAnswer === 'string') {
+                    const correctOption = question.options[answerRule.correctAnswer];
+                    return respondentAnswer === correctOption ? 1 : 0;
+                }
+                return 0;
+            }
+            
+            if (answerRule.type === 'multiple') {
+                if (!Array.isArray(respondentAnswer)) return 0;
+                
+                const correctOptions = answerRule.correctAnswers.map(idx => question.options[idx]);
+                const respondentSet = new Set(respondentAnswer);
+                const correctSet = new Set(correctOptions);
+                
+                // All correct answers must be selected, nothing else
+                if (respondentSet.size === correctSet.size && 
+                    [...respondentSet].every(ans => correctSet.has(ans))) {
+                    return 1;
+                }
+                return 0;
+            }
+            
+            if (answerRule.type === 'partial') {
+                if (typeof respondentAnswer === 'string') {
+                    const correctOptions = answerRule.correctOptions.map(idx => question.options[idx]);
+                    return correctOptions.includes(respondentAnswer) ? 1 : 0;
+                }
+                return 0;
+            }
+            
+            return 0;
+        }
+        
+        function submitSurvey() {
+            const questions = TRANSLATIONS[currentLanguage][currentSurvey];
+            let correct = 0;
+            
+            for (let idx = 0; idx < questions.length; idx++) {
+                const respondentAnswer = answers[idx];
+                const isCorrect = checkAnswer(questions[idx], respondentAnswer, currentSurvey, idx);
+                correct += isCorrect;
+            }
+            
+            const score = Math.round((correct / questions.length) * 100);
+            let rating = '';
+            if (score >= 90) rating = 'expert';
+            else if (score >= 80) rating = 'proficient';
+            else if (score >= 70) rating = 'developing';
+            else rating = 'needs';
+            
+            const labels = UI_LABELS[currentLanguage];
+            const ratingText = labels[rating];
+            const actionText = labels['action' + (rating === 'expert' ? '1' : rating === 'proficient' ? '2' : rating === 'developing' ? '3' : '4')];
+            
+            document.getElementById('resultsTitle').textContent = labels.resultsTitle;
+            document.getElementById('respondentLabel').textContent = labels.respondentLabel;
+            document.getElementById('evalRespondent').textContent = respondentFirstName + ' ' + respondentLastName;
+            document.getElementById('yourScoreLabel').textContent = labels.yourScoreLabel;
+            document.getElementById('scoreDisplay').textContent = score + '%';
+            document.getElementById('ratingDisplay').textContent = ratingText;
+            document.getElementById('ratingDisplay').className = 'rating-' + rating;
+            document.getElementById('actionDisplay').textContent = actionText;
+            document.getElementById('answersTitle').textContent = labels.answersTitle;
+            
+            const answersHtml = questions.map((q, idx) => {
+                const answer = answers[idx] || 'Not answered';
+                const answerText = Array.isArray(answer) ? answer.join(', ') : answer;
+                return `
+                    <div class="answer-item">
+                        <div class="answer-question">Q${idx + 1}: ${q.q}</div>
+                        <div class="answer-response"><strong>Response:</strong> ${answerText}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('answersTracker').innerHTML = answersHtml;
+            
+            document.getElementById('surveyView').classList.add('hidden');
+            document.getElementById('resultsView').classList.remove('hidden');
+            
+            // Sync results to Google Sheets
+            syncToGoogleSheets(respondentFirstName, respondentLastName, currentSurvey, score, ratingText, actionText, answers, currentLanguage);
+        }
+        
+        function syncToGoogleSheets(firstName, lastName, surveyType, score, rating, action, answers, language) {
+            const data = {
+                name: firstName + ' ' + lastName,
+                language: language.toUpperCase(),  // EN, ES, FR
+                survey: surveyType === 'associate' ? 'Associate Survey' : surveyType === 'lead' ? 'Floor Leader Survey' : 'SME Survey',
+                score: score,
+                rating: rating,
+                action: action,
+                answers: answers
+            };
+            
+            if (!GOOGLE_SHEETS_WEBHOOK || GOOGLE_SHEETS_WEBHOOK === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                console.log('Google Sheets webhook not configured');
+                return;
+            }
+            
+            fetch(GOOGLE_SHEETS_WEBHOOK, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    document.getElementById('syncStatus').style.display = 'block';
+                }
+            })
+            .catch(error => console.log('Sync error:', error));
+        }
+        
+        function goHome() {
+            document.getElementById('respondentFirstName').value = '';
+            document.getElementById('respondentLastName').value = '';
+            document.getElementById('homeView').classList.remove('hidden');
+            document.getElementById('surveyView').classList.add('hidden');
+            document.getElementById('resultsView').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
